@@ -44,16 +44,21 @@ class MyHomePage extends StatelessWidget {
               ),
             ),
             Card(
-              child: 
-              Container(
+              child: Container(
                 padding: EdgeInsets.all(10),
-                child: Column(children: [
-                  TextField(),
-                  TextField()
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                  TextField(
+                    decoration: InputDecoration(labelText: "Title"),
+                  ),
+                  TextField(
+                    decoration: InputDecoration(labelText: "About"),
+                  ),
+                  TextButton(onPressed: () {}, child: Text("Add Transaction"), style: TextButton.styleFrom(primary: Colors.purple),)
                 ]),
               ),
-            )
-            ,
+            ),
             Column(
               children: transactions.map((tx) {
                 return Card(
