@@ -52,16 +52,17 @@ class _MyHomePageState extends State<MyHomePage> {
 
   List<Transaction> get _recentTransactions {
     return _userTransactions.where((element) {
-      return element.date.isAfter(DateTime.now().subtract(const Duration(days: 7)));
+      return element.date
+          .isAfter(DateTime.now().subtract(const Duration(days: 7)));
     }).toList();
   }
 
-  void _addNewTransaction(String title, double amount) {
+  void _addNewTransaction(String title, double amount, DateTime date) {
     final newTx = Transaction(
         id: DateTime.now().toString(),
         title: title,
         amount: amount,
-        date: DateTime.now());
+        date: date);
     setState(() {
       _userTransactions.add(newTx);
     });
@@ -76,6 +77,14 @@ class _MyHomePageState extends State<MyHomePage> {
               behavior: HitTestBehavior.opaque,
               child: NewTransaction(addTransaction: _addNewTransaction));
         });
+  }
+
+  void _deleteTransaction(String id) {
+    setState(() {
+      _userTransactions.removeWhere((element) {
+        return element.id == id;
+      });
+    });
   }
 
   @override
@@ -94,7 +103,10 @@ class _MyHomePageState extends State<MyHomePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Chart(recentTransactions: _recentTransactions),
-            TransactionList(transactions: _userTransactions)
+            TransactionList(
+              transactions: _userTransactions,
+              deleteTransaction: _deleteTransaction,
+            )
           ],
         ),
       ),

@@ -4,7 +4,9 @@ import './../models/transaction.dart';
 
 class TransactionList extends StatelessWidget {
   final List<Transaction> transactions;
-  const TransactionList({Key? key, required this.transactions})
+  final Function deleteTransaction;
+  const TransactionList(
+      {Key? key, required this.transactions, required this.deleteTransaction})
       : super(key: key);
 
   @override
@@ -22,7 +24,7 @@ class TransactionList extends StatelessWidget {
                 const SizedBox(
                   height: 10,
                 ),
-                Container(
+                SizedBox(
                     height: 200,
                     child: Image.asset("assets/images/waiting.png",
                         fit: BoxFit.cover))
@@ -35,17 +37,25 @@ class TransactionList extends StatelessWidget {
                   margin:
                       const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
                   child: ListTile(
-                      leading: CircleAvatar(
-                          radius: 30,
-                          child: Padding(
-                              padding: const EdgeInsets.all(6),
-                              child: FittedBox(
-                                  child: Text(
-                                      "\$${transactions[index].amount.toStringAsFixed(2)}")))),
-                      title: Text(transactions[index].title,
-                          style: Theme.of(context).textTheme.headline5),
-                      subtitle: Text(
-                          DateFormat.yMMMd().format(transactions[index].date))),
+                    leading: CircleAvatar(
+                        radius: 30,
+                        child: Padding(
+                            padding: const EdgeInsets.all(6),
+                            child: FittedBox(
+                                child: Text(
+                                    "\$${transactions[index].amount.toStringAsFixed(2)}")))),
+                    title: Text(transactions[index].title,
+                        style: Theme.of(context).textTheme.headline5),
+                    subtitle: Text(
+                        DateFormat.yMMMd().format(transactions[index].date)),
+                    trailing: IconButton(
+                      onPressed: () {
+                        deleteTransaction(transactions[index].id);
+                      },
+                      icon: const Icon(Icons.delete),
+                      color: Theme.of(context).errorColor,
+                    ),
+                  ),
                 );
               },
               itemCount: transactions.length,
